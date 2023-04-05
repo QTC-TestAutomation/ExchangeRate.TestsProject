@@ -1,0 +1,27 @@
+name: load
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'ExchangeRateTests/LoadTests/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'ExchangeRateTests/LoadTests/**'
+  workflow_dispatch:
+
+jobs:
+  loadTests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: loadTests
+        run: |
+          docker build -t exchange-load-tests -f ./ExchangeRateTests/LoadTests/loadtests.dockerFile ./ExchangeRateTests
+          docker run exchange-load-tests

@@ -1,0 +1,27 @@
+name: api
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'ExchangeRateTests/EndpointTests/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'ExchangeRateTests/EndpointTests/**'
+  workflow_dispatch:
+
+jobs:
+  endpointTests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: endpointTests
+        run: |
+          docker build -t exchange-tests -f ./ExchangeRateTests/EndpointTests/tests.dockerFile ./ExchangeRateTests
+          docker run exchange-tests
